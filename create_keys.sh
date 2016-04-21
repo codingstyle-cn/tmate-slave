@@ -4,7 +4,7 @@ gen_key() {
   ks="${keytype}_"
   key="keys/ssh_host_${ks}key"
   if [ ! -e "${key}" ] ; then
-    ssh-keygen -t ${keytype} -f "${key}" -N '' -E md5
+    awk '{print $2}' /etc/ssh/ssh_host_ecdsa_key.pub | base64 -d | sha256sum -b | sed 's/ .*$//' | xxd -r -p | base64
     return $?
   fi
 }
